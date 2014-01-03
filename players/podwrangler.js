@@ -24,8 +24,6 @@
 						title: $('h3').text().replace(/[^a-zA-Z\d\s:]/g, ''),
 						length: jplayer.data("jPlayer").status.duration,
 						features : {
-						    "disable_previous_track" : true,        //Disables selection of previous track
-						    "disable_next_track" : true             //Disables selection of next track
 					    }
 					});
 				}; 
@@ -60,6 +58,27 @@
 			    	jplayer.jPlayer("play", data.amount);
 			    }
 			});
+			simplify.bind(Simplify.MESSAGE_DID_SELECT_PREVIOUS_TRACK, function()
+			{
+				var newPlaybackRate = 1,
+					currentPlaybackRate = jplayer.data("jPlayer").options.playbackRate;
+				if (currentPlaybackRate === 2) {
+					newPlaybackRate = 1.5;
+				}
+			    jplayer.data("jPlayer").playbackRate(newPlaybackRate);
+			}).bind(Simplify.MESSAGE_DID_SELECT_NEXT_TRACK, function()
+			{
+				var newPlaybackRate = 1.5,
+					currentPlaybackRate = jplayer.data("jPlayer").options.playbackRate;
+				if (currentPlaybackRate === 1.5) {
+					newPlaybackRate = 2;
+				}
+			    jplayer.data("jPlayer").playbackRate(newPlaybackRate);
+			});
+			
+			
+			
+			
 			simplify.setNewPlaybackState(Simplify.PLAYBACK_STATE_PAUSED);
 
 			// Bind browser play event to tell simplify about it.
@@ -70,8 +89,6 @@
 						title: $('h3').text().replace(/[^a-zA-Z\d\s:]/g, ''),
 						length: jplayer.data("jPlayer").status.duration,
 						features : {
-						    "disable_previous_track" : true,        //Disables selection of previous track
-						    "disable_next_track" : true             //Disables selection of next track
 					    }
 					});
 			});
